@@ -1,0 +1,23 @@
+server:
+  port: 8193
+
+spring:
+  application:
+    name: RATING-SERVICE
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: microservices
+
+  config:
+    import: optional:configserver:http://localhost:8196
+
+## Now we will fetch this from git default file application.properties ,with the help of config server
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://localhost:8194/eureka
