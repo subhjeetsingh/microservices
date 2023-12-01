@@ -17,8 +17,31 @@ spring:
 #    show-sql: true
   config:
     import: configserver:http://localhost:8196
+
+# Spring security configuration to make userservice a client, which will call hotel and rating
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-54760333.okta.com/oauth2/default # from okta
+      client:
+        registration:
+          my-internal-custom-client:
+            provider: okta
+            authorizationGrantType: client_credentials
+            scope: internal # we created in okta
+            clientId: 0oadjzmdbtPbaNmX15d7
+            clientSecret: V5E5gNVrgdEoIPGuqfC7zxCtTOU2btY7iKHgn3DXuaNBH9rpOyyoWndEA0ys29Eu
+
+        provider:
+          okta:
+            issuerUri: https://dev-54760333.okta.com/oauth2/default
+
 # profiles:
 #   active: prod
+
+
+
 
 ## Now we will fetch this from git default file application.properties ,with the help of config server
 #eureka:
@@ -69,4 +92,10 @@ resilience4j:
       userRateLimiter:
         limitRefreshPeriod: 4s
         limitForPeriod: 2
-        timeoutDuration: 2
+        timeoutDuration: 2s
+
+## Okta configurations no need of client-id and secret because it's not going to open login page
+okta:
+  oauth2:
+    issuer: https://dev-54760333.okta.com/oauth2/default
+    audience: api://default
