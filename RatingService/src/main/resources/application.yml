@@ -21,3 +21,9 @@ spring:
 #    fetch-registry: true
 #    service-url:
 #      defaultZone: http://localhost:8194/eureka
+
+## Okta configurations no need of client-id and secret because it's not going to open login page
+okta:
+  oauth2:
+    issuer: https://dev-54760333.okta.com/oauth2/default
+    audience: api://default

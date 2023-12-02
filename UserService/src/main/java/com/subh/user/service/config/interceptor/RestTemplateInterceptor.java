@@ -1,5 +1,7 @@
 package com.subh.user.service.config.interceptor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -11,6 +13,7 @@ import java.io.IOException;
 
 public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
+    private Logger logger = LoggerFactory.getLogger(RestTemplateInterceptor.class);
     private OAuth2AuthorizedClientManager manager;
 
     public RestTemplateInterceptor(OAuth2AuthorizedClientManager manager) {
@@ -22,6 +25,8 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
         String token = manager.authorize(OAuth2AuthorizeRequest.withClientRegistrationId("my-internal-custom-client")
                 .principal("internal").build()).getAccessToken().getTokenValue();
+
+        logger.info("Rest Template Interceptor Token :{}",token);
         request.getHeaders().add("Authorization", "Bearer "+token);
 
         return execution.execute(request,body);
